@@ -130,10 +130,12 @@ export default function DashboardPage() {
 
   if (loading || loadingData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="text-lg font-medium text-gray-700">Carregando...</span>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+            <span className="text-lg font-medium text-gray-700 dark:text-gray-300">Carregando...</span>
+          </div>
         </div>
       </div>
     );
@@ -144,27 +146,34 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg border-b-2 border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <h1 className="text-xl font-black text-gray-900">Fit VS Dashboard</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Navigation Bar */}
+      <nav className="relative z-10 w-full border-b border-gray-200/20 bg-white/80 backdrop-blur-md dark:bg-gray-900/80 dark:border-gray-700/20">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">FV</span>
+              </div>
+              <span className="text-xl font-semibold text-gray-900 dark:text-white">Fit VS</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700 font-bold">
-                Olá, {user.nome}
-              </span>
-              <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide border-2 ${
-                user.tipo === UserType.PROFESSOR 
-                  ? 'bg-blue-100 text-blue-800 border-blue-300' 
-                  : 'bg-green-100 text-green-800 border-green-300'
-              }`}>
-                {user.tipo === UserType.PROFESSOR ? 'Professor' : 'Aluno'}
-              </span>
+            
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="hidden sm:flex items-center space-x-3">
+                <span className="text-gray-700 dark:text-gray-300 font-medium">
+                  Olá, {user.nome}
+                </span>
+                <span className={`px-2 py-1 rounded-lg text-xs font-semibold uppercase tracking-wide ${
+                  user.tipo === UserType.PROFESSOR 
+                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300' 
+                    : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                }`}>
+                  {user.tipo === UserType.PROFESSOR ? 'Professor' : 'Aluno'}
+                </span>
+              </div>
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-black transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 border-2 border-red-600 hover:border-red-700"
+                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105"
               >
                 Sair
               </button>
@@ -173,380 +182,435 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="mb-8">
-            <h2 className="text-3xl font-black text-gray-900 mb-6">
-              Bem-vindo, {user.nome}!
-            </h2>
-            
-            {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {user.tipo === UserType.PROFESSOR ? (
-                <>
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-blue-400">
-                            <span className="text-white text-xl">👥</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Total de Alunos
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.totalStudents || 0}
-                            </dd>
-                          </dl>
-                        </div>
+      <main className="mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Mobile User Info */}
+        <div className="sm:hidden mb-6 p-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-lg">
+                {user.nome.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                {user.nome}
+              </h3>
+              <span className={`inline-block px-2 py-1 rounded-lg text-xs font-semibold uppercase tracking-wide ${
+                user.tipo === UserType.PROFESSOR 
+                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300' 
+                  : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+              }`}>
+                {user.tipo === UserType.PROFESSOR ? 'Professor' : 'Aluno'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Welcome Header */}
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Bem-vindo de volta!
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+            Aqui está um resumo das suas atividades recentes
+          </p>
+        </div>
+        
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+          {user.tipo === UserType.PROFESSOR ? (
+            <>
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-green-400">
-                            <span className="text-white text-xl">✅</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Treinos Concluídos
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.completedWorkouts || 0}
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Total de Alunos
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.totalStudents || 0}
+                      </dd>
                     </div>
                   </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-yellow-400">
-                            <span className="text-white text-xl">⏳</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Treinos Pendentes
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.pendingWorkouts || 0}
-                            </dd>
-                          </dl>
-                        </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-purple-400">
-                            <span className="text-white text-xl">📊</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Progresso Médio
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.averageProgress || 0}%
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Treinos Concluídos
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.completedWorkouts || 0}
+                      </dd>
                     </div>
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-green-400">
-                            <span className="text-white text-xl">✅</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Treinos Concluídos
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.completedWorkouts || 0}
-                            </dd>
-                          </dl>
-                        </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-yellow-400">
-                            <span className="text-white text-xl">⏳</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Treinos Pendentes
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.pendingWorkouts || 0}
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Treinos Pendentes
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.pendingWorkouts || 0}
+                      </dd>
                     </div>
                   </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-blue-400">
-                            <span className="text-white text-xl">🏃</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Em Progresso
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.inProgressWorkouts || 0}
-                            </dd>
-                          </dl>
-                        </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="bg-white overflow-hidden shadow-xl rounded-xl border-2 border-gray-200">
-                    <div className="p-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-purple-400">
-                            <span className="text-white text-xl">📊</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 w-0 flex-1">
-                          <dl>
-                            <dt className="text-sm font-black text-gray-500 uppercase tracking-wide">
-                              Seu Progresso
-                            </dt>
-                            <dd className="text-2xl font-black text-gray-900">
-                              {dashboardData?.overallProgress || 0}%
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Progresso Médio
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.averageProgress || 0}%
+                      </dd>
                     </div>
                   </div>
-                </>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Treinos Concluídos
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.completedWorkouts || 0}
+                      </dd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Treinos Pendentes
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.pendingWorkouts || 0}
+                      </dd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Em Progresso
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.inProgressWorkouts || 0}
+                      </dd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-lg rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4 w-0 flex-1">
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Seu Progresso
+                      </dt>
+                      <dd className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {dashboardData?.overallProgress || 0}%
+                      </dd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        {/* Professor Information - Redesigned for Mobile */}
+        {user.tipo === UserType.ALUNO && (
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-xl rounded-xl p-4 sm:p-6 mb-8 border border-gray-200/50 dark:border-gray-700/50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Meu Professor</h3>
+              {loadingProfessor && (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Carregando...</span>
+                </div>
               )}
             </div>
-
-            {/* Professor Information (Students Only) - Updated with new endpoint */}
-            {user.tipo === UserType.ALUNO && (
-              <div className="bg-white shadow-xl rounded-xl p-6 mb-8 border-2 border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-black text-gray-900">Meu Professor</h3>
-                  {loadingProfessor && (
-                    <div className="flex items-center space-x-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                      <span className="text-sm text-gray-500">Carregando...</span>
+            
+            {professorInfo && professorInfo.professor ? (
+              <div className="space-y-4">
+                {/* Professor Info */}
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                      <span className="text-white font-bold text-2xl">
+                        {professorInfo.professor.nome.charAt(0).toUpperCase()}
+                      </span>
                     </div>
-                  )}
-                </div>
-                
-                {professorInfo && professorInfo.professor ? (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center shadow-lg border-2 border-blue-300">
-                        <span className="text-blue-700 font-black text-2xl">
-                          {professorInfo.professor.nome.charAt(0).toUpperCase()}
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900 dark:text-white">
+                        {professorInfo.professor.nome}
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400">{professorInfo.professor.email}</p>
+                      <div className="flex items-center space-x-2 mt-1">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Professor Responsável
                         </span>
                       </div>
-                      <div>
-                        <h4 className="font-black text-xl text-gray-900">{professorInfo.professor.nome}</h4>
-                        <p className="text-gray-600 font-bold">{professorInfo.professor.email}</p>
-                        <p className="text-blue-600 text-sm font-bold">Meu Professor Responsável</p>
-                        <p className="text-gray-500 text-xs font-bold">
-                          Atribuído em: {new Date(professorInfo.professor.dataCriacao).toLocaleDateString('pt-BR')}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-black transition-colors focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 border-2 border-blue-600 hover:border-blue-700">
-                        Enviar Mensagem
-                      </button>
-                      <button
-                        onClick={fetchStudentProfessor}
-                        className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-sm"
-                      >
-                        Atualizar Info
-                      </button>
-                    </div>
-                  </div>
-                ) : !loadingProfessor ? (
-                  <div className="text-center py-8">
-                    <div className="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 border-2 border-gray-200">
-                      <span className="text-3xl text-gray-400">👤</span>
-                    </div>
-                    <h4 className="text-lg font-black text-gray-900 mb-2">Nenhum professor atribuído</h4>
-                    <p className="text-gray-600 font-bold mb-4">
-                      Você ainda não foi atribuído a um professor. Entre em contato com a administração.
-                    </p>
-                    <button
-                      onClick={fetchStudentProfessor}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition-colors"
-                    >
-                      Verificar Novamente
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="text-gray-600 font-bold mt-2">Carregando informações do professor...</p>
-                  </div>
-                )}
-
-                {/* Debug info (remove in production) */}
-                {professorInfo && (
-                  <div className="mt-4 p-3 bg-gray-100 rounded-lg text-xs">
-                    <details>
-                      <summary className="font-bold cursor-pointer">Debug Info</summary>
-                      <pre className="mt-2 text-gray-600">
-                        {JSON.stringify(professorInfo, null, 2)}
-                      </pre>
-                    </details>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Next Workout (Students Only) */}
-            {user.tipo === UserType.ALUNO && dashboardData?.nextWorkout && (
-              <div className="bg-white shadow-xl rounded-xl p-6 mb-8 border-2 border-gray-200">
-                <h3 className="text-lg font-black text-gray-900 mb-4">Próximo Treino</h3>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-black text-lg text-gray-900">{dashboardData.nextWorkout.nome}</h4>
-                    <p className="text-gray-600 font-bold">
-                      Prazo: {new Date(dashboardData.nextWorkout.prazo).toLocaleDateString('pt-BR')}
-                    </p>
-                  </div>
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-black transition-colors focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 border-2 border-blue-600 hover:border-blue-700">
-                    Iniciar Treino
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Recent Students (Professors Only) */}
-            {user.tipo === UserType.PROFESSOR && (
-              <div className="bg-white shadow-xl rounded-xl p-6 mb-8 border-2 border-gray-200">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-black text-gray-900">Gerenciar Alunos</h3>
-                  <button
-                    onClick={() => setShowAssignModal(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-black transition-colors focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 flex items-center space-x-2 border-2 border-blue-600 hover:border-blue-700"
-                  >
-                    <span>+</span>
-                    <span>Atribuir Aluno</span>
-                  </button>
-                </div>
-                
-                {dashboardData?.recentStudents && dashboardData.recentStudents.length > 0 ? (
-                  <div className="space-y-4">
-                    {dashboardData.recentStudents.map((student) => (
-                      <div key={student._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-2 border-gray-200 hover:bg-gray-100 transition-colors">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center border-2 border-blue-200">
-                            <span className="text-blue-600 font-black text-lg">
-                              {student.nome.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div>
-                            <h4 className="font-black text-gray-900">{student.nome}</h4>
-                            <p className="text-gray-600 text-sm font-bold">{student.email}</p>
-                          </div>
-                        </div>
-                        <button className="text-blue-600 hover:text-blue-800 font-black transition-colors focus:outline-none focus:underline">
-                          Ver Progresso
-                        </button>
-                      </div>
-                    ))}
-                    <button className="w-full mt-4 text-blue-600 hover:text-blue-800 font-black text-center py-2 rounded-lg border-2 border-blue-200 hover:bg-blue-50 transition-colors">
-                      Ver Todos os Alunos
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 border-2 border-gray-200">
-                      <span className="text-4xl text-gray-400">👥</span>
-                    </div>
-                    <h4 className="text-lg font-black text-gray-900 mb-2">Nenhum aluno ainda</h4>
-                    <p className="text-gray-600 mb-6 font-bold">
-                      Você ainda não tem alunos atribuídos. Clique no botão acima para atribuir alunos existentes ou aguarde novas inscrições.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Notifications */}
-            {dashboardData?.notifications && dashboardData.notifications.length > 0 ? (
-              <div className="bg-white shadow-xl rounded-xl p-6 border-2 border-gray-200">
-                <h3 className="text-lg font-black text-gray-900 mb-4">Notificações</h3>
-                <div className="space-y-4">
-                  {dashboardData.notifications.map((notification) => (
-                    <div key={notification._id} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50 rounded-r-lg border-2 border-blue-200">
-                      <h4 className="font-black text-sm text-gray-900">{notification.titulo}</h4>
-                      <p className="text-gray-700 text-sm mt-1 font-bold">{notification.mensagem}</p>
-                      <p className="text-gray-500 text-xs mt-2 font-bold">
-                        {new Date(notification.dataCriacao).toLocaleDateString('pt-BR')}
+                      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
+                        Atribuído em: {new Date(professorInfo.professor.dataCriacao).toLocaleDateString('pt-BR')}
                       </p>
                     </div>
-                  ))}
+                  </div>
                 </div>
-                <button className="mt-6 w-full text-blue-600 hover:text-blue-800 font-black text-center py-2 rounded-lg border-2 border-blue-200 hover:bg-blue-50 transition-colors">
-                  Ver todas as notificações
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span>Enviar Mensagem</span>
+                  </button>
+                  <button
+                    onClick={fetchStudentProfessor}
+                    className="sm:w-auto bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Atualizar</span>
+                  </button>
+                </div>
+              </div>
+            ) : !loadingProfessor ? (
+              <div className="text-center py-8">
+                <div className="w-20 h-20 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Nenhum professor atribuído</h4>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Você ainda não foi atribuído a um professor. Entre em contato com a administração.
+                </p>
+                <button
+                  onClick={fetchStudentProfessor}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+                >
+                  Verificar Novamente
                 </button>
               </div>
             ) : (
-              <div className="bg-white shadow-xl rounded-xl p-6 border-2 border-gray-200">
-                <h3 className="text-lg font-black text-gray-900 mb-4">Notificações</h3>
-                <div className="text-center py-12">
-                  <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 border-2 border-gray-200">
-                    <span className="text-4xl text-gray-400">🔔</span>
-                  </div>
-                  <p className="text-gray-600 font-black">Nenhuma notificação no momento</p>
-                </div>
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent mx-auto"></div>
+                <p className="text-gray-600 dark:text-gray-400 font-medium mt-2">Carregando informações do professor...</p>
               </div>
             )}
           </div>
+        )}
+
+        {/* Next Workout - Students Only */}
+        {user.tipo === UserType.ALUNO && dashboardData?.nextWorkout && (
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-xl rounded-xl p-4 sm:p-6 mb-8 border border-gray-200/50 dark:border-gray-700/50">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Próximo Treino</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+              <div className="space-y-2">
+                <h4 className="font-bold text-lg text-gray-900 dark:text-white">{dashboardData.nextWorkout.nome}</h4>
+                <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Prazo: {new Date(dashboardData.nextWorkout.prazo).toLocaleDateString('pt-BR')}</span>
+                </div>
+              </div>
+              <button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10v4a2 2 0 002 2h2a2 2 0 002-2v-4M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1" />
+                </svg>
+                <span>Iniciar Treino</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Recent Students - Professors Only */}
+        {user.tipo === UserType.PROFESSOR && (
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-xl rounded-xl p-4 sm:p-6 mb-8 border border-gray-200/50 dark:border-gray-700/50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Gerenciar Alunos</h3>
+              <button
+                onClick={() => setShowAssignModal(true)}
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Atribuir Aluno</span>
+              </button>
+            </div>
+            
+            {dashboardData?.recentStudents && dashboardData.recentStudents.length > 0 ? (
+              <div className="space-y-4">
+                {dashboardData.recentStudents.map((student) => (
+                  <div key={student._id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-gray-50/80 dark:bg-gray-700/50 rounded-lg border border-gray-200/50 dark:border-gray-600/50 hover:bg-gray-100/80 dark:hover:bg-gray-700/80 transition-all duration-200 space-y-4 sm:space-y-0">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">
+                          {student.nome.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 dark:text-white">{student.nome}</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">{student.email}</p>
+                      </div>
+                    </div>
+                    <button className="w-full sm:w-auto text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                      Ver Progresso
+                    </button>
+                  </div>
+                ))}
+                <button className="w-full mt-4 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-center py-3 rounded-lg border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200">
+                  Ver Todos os Alunos
+                </button>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-24 h-24 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                  <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Nenhum aluno ainda</h4>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Você ainda não tem alunos atribuídos. Use o botão acima para atribuir alunos existentes.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Notifications */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-xl rounded-xl p-4 sm:p-6 border border-gray-200/50 dark:border-gray-700/50">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Notificações</h3>
+          
+          {dashboardData?.notifications && dashboardData.notifications.length > 0 ? (
+            <div className="space-y-4">
+              {dashboardData.notifications.map((notification) => (
+                <div key={notification._id} className="p-4 rounded-lg border-l-4 border-blue-500 bg-blue-50/80 dark:bg-blue-900/20 border border-blue-200/50 dark:border-blue-700/50">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0">
+                    <div className="flex-1">
+                      <h4 className="font-bold text-sm text-gray-900 dark:text-white">{notification.titulo}</h4>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm mt-1">{notification.mensagem}</p>
+                    </div>
+                    <span className="text-gray-500 dark:text-gray-400 text-xs whitespace-nowrap">
+                      {new Date(notification.dataCriacao).toLocaleDateString('pt-BR')}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <button className="w-full mt-6 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-center py-3 rounded-lg border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200">
+                Ver todas as notificações
+              </button>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </div>
+              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Nenhuma notificação</h4>
+              <p className="text-gray-600 dark:text-gray-400">Você está em dia! Não há notificações pendentes.</p>
+            </div>
+          )}
         </div>
       </main>
+
+      {/* Background Decorations */}
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-4 sm:right-10 w-48 h-48 sm:w-72 sm:h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-4 sm:left-10 w-64 h-64 sm:w-96 sm:h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
+      </div>
 
       {/* Assign Student Modal */}
       {showAssignModal && (
