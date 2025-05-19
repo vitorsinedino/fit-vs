@@ -41,7 +41,7 @@ export default function Home() {
           Bem-vindo ao Fit VS
         </h1>
         <p className="text-lg text-center sm:text-left text-gray-700 dark:text-gray-300">
-          Sistema de gerenciamento acadêmico para professores e alunos
+          Sistema de acompanhamento para professores, alunos e atletas
         </p>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
